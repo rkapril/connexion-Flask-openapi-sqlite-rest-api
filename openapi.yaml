@@ -1,0 +1,168 @@
+openapi: "3.0.0"
+
+info:
+  description: Product RESTful web services
+  version: 1.0.0
+  title: Product RESTful web services
+
+servers:
+  - url: http://localhost:8000/api
+
+paths:
+  /product:
+    get:
+      summary: Retrieve all products
+      description: Retrieve all products
+      operationId: product.retrieveAllProducts
+      responses:
+        200:
+          description: Successfully retrieve all products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/product'
+    
+    put:
+      summary: Create a new product
+      description: Create a new product
+      operationId: product.createNewProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/product'
+      responses:
+        200:
+          description: Successfully created the product
+          content:
+            string:
+              schema:
+                type: string
+        400:
+          description: Invalid input
+          content:
+            string:
+              schema:
+                type: string
+        409:
+          description: Conflict with existing product
+          content:
+            string:
+              schema:
+                type: string
+    
+  /product/{product_id}:
+    get:
+      summary: Retrieve a product by ID
+      description: Retrieve a product by ID
+      operationId: product.retrieveProductById
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product to retrieve
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Successfully retrieve the product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+        404:
+          description: Product not found
+          content:
+            string:
+              schema:
+                type: string
+    post:
+        summary: Update an existing product
+        description: Update an existing product
+        operationId: product.updateProduct
+        parameters:
+          - name: product_id
+            in: path
+            required: true
+            description: The ID of the product to update
+            schema:
+              type: integer
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+        responses:
+          200:
+            description: Successfully updated the product
+            content:
+              string:
+                schema:
+                  type: string
+          400:
+            description: Invalid input
+            content:
+              string:
+                schema:
+                  type: string
+          404:
+            description: Product not found
+            content:
+              string:
+                schema:
+                  type: string
+    delete:
+      summary: Delete a product by ID
+      description: Delete a product by ID
+      operationId: product.deleteProduct
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: The ID of the product to delete
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Successfully deleted the product
+          content:
+            string:
+              schema:
+                type: string
+        404:
+          description: Product not found
+          content:
+            string:
+              schema:
+                type: string
+
+
+
+components:
+  schemas:
+    product:
+      type: object
+      properties:
+        product_id:
+          type: integer
+        sku_code:
+          type: string
+        product_name:
+          type: string
+        product_description:
+          type: string
+        brand:
+          type: string
+        model:
+          type: string
+        category:
+          type: string
+        quantity_on_hand:
+          type: integer
+        unit_price:
+          type: number
+          format: float
